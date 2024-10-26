@@ -1,4 +1,4 @@
-
+from windowsApp import MainWindow
 
 def calculate_honey(V:float, Cv:float, Cm:float):
     #M = V * (24.5 * Cv + Cm)
@@ -16,4 +16,5 @@ def main():
     pass
 
 if __name__ == "__main__":
-    main()
+    app = MainWindow()
+    app.mainloop()
