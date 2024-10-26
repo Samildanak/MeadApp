@@ -37,26 +37,29 @@ class NewRecipeWindow(tk.Toplevel):
     def __init__(self, parent):
         super().__init__(parent)
         self.title("New Recipe")
-        self.geometry("600x800")
+        self.geometry("600x400")
 
-        id = self.get_id()
-        date = datetime.now().strftime("%d/%m/%Y")
-
-        self.name_id_frame = tk.Frame(self)
-        self.ingredients_frame = tk.Frame(self)
         self.residual_frame = tk.Frame(self)
         self.note_frame = tk.Frame
         self.button_frame = tk.Frame(self)
 
-        self.name_id_frame.pack()
+        self.create_name_id_frame()
+        self.create_ingredients_frame()
 
-        self.batch_lbl = tk.Label(self.name_id_frame, text=("Batch n° " + str(id)))
+    def create_name_id_frame(self):
+        self.id = self.get_id()
+        self.date = datetime.now().strftime("%d/%m/%Y")
+
+        self.name_id_frame = tk.Frame(self)
+        self.name_id_frame.place(x=10,y=10)
+
+        self.batch_lbl = tk.Label(self.name_id_frame, text=("Batch n° " + str(self.id)))
 
         self.name_lbl = tk.Label(self.name_id_frame, text="Name : ")
         self.name_txt_box = tk.Text(self.name_id_frame, height=1, width=40)
 
         self.date_lbl = tk.Label(self.name_id_frame, text="Date")
-        self.date_calc_lbl = tk.Label(self.name_id_frame, text=date)
+        self.date_calc_lbl = tk.Label(self.name_id_frame, text=self.date)
 
         self.batch_lbl.grid(column=0, row=0)
         self.name_lbl.grid(column=1, row=1)
@@ -64,8 +67,18 @@ class NewRecipeWindow(tk.Toplevel):
         self.date_lbl.grid(column=1, row=2)
         self.date_calc_lbl.grid(column=2, row=2)
 
+    def create_ingredients_frame(self):
+        self.ingredients_frame = tk.Frame(self)
+        self.ingredients_frame.place(x=10, y=100)
+
+        self.lbl = tk.Label(self.ingredients_frame, text="Ici")
+        self.lbl.pack()
+
     def get_id(self):
         return 1
+    
+    def save_recipe(self):
+        pass
 
 class ShowRecipeWindow(tk.Toplevel):
     def __init__(self, parent):
