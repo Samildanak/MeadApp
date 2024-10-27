@@ -1,0 +1,7 @@
+{
+    "files": [
+        "widget.py",
+        "MainWindow.ui",
+        "NewRecipe.ui"
+    ]
+}
