@@ -209,6 +209,9 @@
       <height>22</height>
      </rect>
     </property>
+    <property name="maximum">
+     <double>1000000.000000000000000</double>
+    </property>
    </widget>
    <widget class="QLabel" name="label_11">
     <property name="geometry">

@@ -77,6 +77,7 @@ class Ui_NewRecipeWindow(object):
         self.honey_box = QDoubleSpinBox(self.centralwidget)
         self.honey_box.setObjectName(u"honey_box")
         self.honey_box.setGeometry(QRect(120, 290, 81, 22))
+        self.honey_box.setMaximum(1000000.000000000000000)
         self.label_11 = QLabel(self.centralwidget)
         self.label_11.setObjectName(u"label_11")
         self.label_11.setGeometry(QRect(210, 290, 49, 16))
