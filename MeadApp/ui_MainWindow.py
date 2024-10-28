@@ -24,6 +24,9 @@ class Ui_MainWindow(object):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(438, 238)
+        icon = QIcon()
+        icon.addFile(u"../Resources/meadappico_Uh1_icon.ico", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        MainWindow.setWindowIcon(icon)
         self.actionNew_Recipe = QAction(MainWindow)
         self.actionNew_Recipe.setObjectName(u"actionNew_Recipe")
         self.actionNew_Recipe.setMenuRole(QAction.MenuRole.NoRole)
@@ -43,7 +46,7 @@ class Ui_MainWindow(object):
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Widget", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Mead App by Samildanak", None))
         self.actionNew_Recipe.setText(QCoreApplication.translate("MainWindow", u"New Recipe", None))
 #if QT_CONFIG(tooltip)
         self.actionNew_Recipe.setToolTip(QCoreApplication.translate("MainWindow", u"Open New Recipe Window", None))

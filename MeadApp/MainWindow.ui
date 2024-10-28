@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Widget</string>
+   <string>Mead App by Samildanak</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../Resources/meadappico_Uh1_icon.ico</normaloff>../Resources/meadappico_Uh1_icon.ico</iconset>
   </property>
   <widget class="QPushButton" name="newRecipeButton">
    <property name="geometry">

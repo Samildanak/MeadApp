@@ -2,6 +2,9 @@
     "files": [
         "widget.py",
         "MainWindow.ui",
-        "NewRecipe.ui"
+        "NewRecipe.ui",
+        "AddYeast.ui",
+        "ShowRecipe.ui",
+        "SelectedRecipe.ui"
     ]
 }

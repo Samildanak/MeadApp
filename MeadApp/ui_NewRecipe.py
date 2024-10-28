@@ -15,16 +15,20 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QCheckBox, QDateEdit, QDoubleSpinBox,
-    QHeaderView, QLabel, QLineEdit, QMainWindow,
-    QPushButton, QSizePolicy, QStatusBar, QTableWidget,
-    QTableWidgetItem, QTextEdit, QWidget)
+from PySide6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox, QComboBox,
+    QDateEdit, QDoubleSpinBox, QHeaderView, QLabel,
+    QLineEdit, QMainWindow, QPushButton, QSizePolicy,
+    QStatusBar, QTableWidget, QTableWidgetItem, QTextEdit,
+    QWidget)
 
 class Ui_NewRecipeWindow(object):
     def setupUi(self, NewRecipeWindow):
         if not NewRecipeWindow.objectName():
             NewRecipeWindow.setObjectName(u"NewRecipeWindow")
         NewRecipeWindow.resize(563, 600)
+        icon = QIcon()
+        icon.addFile(u"../Resources/meadappico_Uh1_icon.ico", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        NewRecipeWindow.setWindowIcon(icon)
         self.centralwidget = QWidget(NewRecipeWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.batch_label = QLabel(self.centralwidget)
@@ -118,21 +122,34 @@ class Ui_NewRecipeWindow(object):
         self.tableWidget.setGeometry(QRect(270, 140, 250, 151))
         self.tableWidget.setMinimumSize(QSize(250, 0))
         self.tableWidget.setMaximumSize(QSize(205, 16777215))
+        self.tableWidget.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         self.tableWidget.setShowGrid(True)
         self.tableWidget.setSortingEnabled(False)
         self.tableWidget.horizontalHeader().setDefaultSectionSize(200)
         self.label_13 = QLabel(self.centralwidget)
         self.label_13.setObjectName(u"label_13")
-        self.label_13.setGeometry(QRect(20, 370, 101, 16))
+        self.label_13.setGeometry(QRect(20, 410, 101, 16))
         self.fermaid_box = QCheckBox(self.centralwidget)
         self.fermaid_box.setObjectName(u"fermaid_box")
-        self.fermaid_box.setGeometry(QRect(120, 370, 21, 20))
+        self.fermaid_box.setGeometry(QRect(120, 410, 21, 20))
         self.save_box = QPushButton(self.centralwidget)
         self.save_box.setObjectName(u"save_box")
         self.save_box.setGeometry(QRect(380, 530, 171, 41))
         self.note_box = QTextEdit(self.centralwidget)
         self.note_box.setObjectName(u"note_box")
         self.note_box.setGeometry(QRect(270, 330, 251, 191))
+        self.comboBox = QComboBox(self.centralwidget)
+        self.comboBox.setObjectName(u"comboBox")
+        self.comboBox.setGeometry(QRect(120, 330, 131, 22))
+        self.add_yeast_button = QPushButton(self.centralwidget)
+        self.add_yeast_button.setObjectName(u"add_yeast_button")
+        self.add_yeast_button.setGeometry(QRect(80, 370, 131, 24))
+        self.initial_brix = QDoubleSpinBox(self.centralwidget)
+        self.initial_brix.setObjectName(u"initial_brix")
+        self.initial_brix.setGeometry(QRect(120, 440, 81, 22))
+        self.label_14 = QLabel(self.centralwidget)
+        self.label_14.setObjectName(u"label_14")
+        self.label_14.setGeometry(QRect(20, 440, 101, 16))
         NewRecipeWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QStatusBar(NewRecipeWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -144,7 +161,7 @@ class Ui_NewRecipeWindow(object):
     # setupUi
 
     def retranslateUi(self, NewRecipeWindow):
-        NewRecipeWindow.setWindowTitle(QCoreApplication.translate("NewRecipeWindow", u"MainWindow", None))
+        NewRecipeWindow.setWindowTitle(QCoreApplication.translate("NewRecipeWindow", u"New Recipe", None))
         self.batch_label.setText(QCoreApplication.translate("NewRecipeWindow", u"Batch n\u00b01", None))
         self.label_2.setText(QCoreApplication.translate("NewRecipeWindow", u"Name :", None))
         self.label_3.setText(QCoreApplication.translate("NewRecipeWindow", u"Date :", None))
@@ -184,5 +201,7 @@ class Ui_NewRecipeWindow(object):
         self.label_13.setText(QCoreApplication.translate("NewRecipeWindow", u"Fermaid K", None))
         self.fermaid_box.setText("")
         self.save_box.setText(QCoreApplication.translate("NewRecipeWindow", u"Save Recipe", None))
+        self.add_yeast_button.setText(QCoreApplication.translate("NewRecipeWindow", u"Add New Yeast", None))
+        self.label_14.setText(QCoreApplication.translate("NewRecipeWindow", u"Initial Brix", None))
     # retranslateUi
 
