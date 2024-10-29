@@ -1,3 +1,3 @@
 batch_id,name,date,volume,predicted_alcohol,residual_sugar,honey_quantity,yeast,fermaid_k,initial_brix,actual_brix,note
-1,Hydromel de miel de framboisier,15/05/2024,1.0,10.0,50.0,334.0,ec-1118,No,25.8,11.0,Test
+1,Hydromel de miel de framboisier,15/05/2024,1.0,10.0,50.0,334.0,ec-1118,No,26.8,11.0,Test
 2,Hydromel de miel de printemps,15/05/2024,1.0,10.0,50.0,345.0,ec-1118,No,27,11.6,

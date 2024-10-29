@@ -213,6 +213,7 @@ class ShowRecipeWindow(QMainWindow):
                     self.model.appendRow(modelRow)
         
         self.showRecipeUi.ConfirmBox.accepted.connect(self.showRecipe)
+        self.showRecipeUi.ConfirmBox.rejected.connect(self.close)
 
     def showRecipe(self):
         recipe_selected = self.showRecipeUi.tableView.selectedIndexes()
