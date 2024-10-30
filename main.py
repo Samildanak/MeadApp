@@ -88,7 +88,7 @@ class NewRecipeWindow(QMainWindow):
         initialBrix = str(self.newRecipeUi.initial_brix.value())
         actualBrix = initialBrix
 
-        # Construire un dictionnaire représentant une recette complète
+        # Build a dictionnary with the new recipe
         new_entry = {
             "batch_id": str(self.batchId),
             "name": name,
@@ -104,13 +104,13 @@ class NewRecipeWindow(QMainWindow):
             "note": notes,
         }
 
-        # Ajouter la nouvelle recette à la liste des recettes
+        # Add new recipe to recipe list
         if not hasattr(self, "dataList"):
             self.dataList = []
 
         self.dataList.append(new_entry)
 
-        # Écrire dans le fichier CSV
+        # Write in csv File
         try:
             with open(self.csvpath, "w", encoding="utf-8", newline='') as theFile:
                 writer = csv.DictWriter(theFile, new_entry.keys())
