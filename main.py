@@ -6,6 +6,9 @@ import csv
 # Import calculation library
 import meadCalculation as mC
 
+# Import User Database library
+from db_connection import Database
+
 # Import Qt libraries
 from PySide6.QtWidgets import QApplication, QWidget, QMainWindow, QDialog, QHeaderView, QTableView
 from PySide6.QtCore import QDate, Signal, Qt
@@ -24,25 +27,28 @@ class MainWindow(QWidget):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
+        self.db = Database("Data/connection_info.json")
+
         self.ui.newRecipeButton.clicked.connect(self.onNewRecipeClicked)
         self.ui.showRecipeButton.clicked.connect(self.onShowRecipeClicked)
 
     def onNewRecipeClicked(self):
-        newRecipe = NewRecipeWindow(self)
+        newRecipe = NewRecipeWindow(self, self.db)
         newRecipe.show()
     
     def onShowRecipeClicked(self):
-        showRecipe = ShowRecipeWindow(self)
+        showRecipe = ShowRecipeWindow(self, self.db)
         showRecipe.show()
 
 class NewRecipeWindow(QMainWindow):
-    def __init__(self, parent=None):
+    def __init__(self, db, parent=None):
         super().__init__(parent)
         self.newRecipeUi = Ui_NewRecipeWindow()
         self.newRecipeUi.setupUi(self)
         self.csvpath = "./Data/meadData.csv"
         self.dataList = []
         self.updateYeast = False
+        self.db = db
 
         with open(self.csvpath, "r") as theFile:
             reader = csv.reader(theFile)
@@ -141,7 +147,7 @@ class NewRecipeWindow(QMainWindow):
 class NewYeastWindow(QDialog):
     yeastTableUpdated = Signal()
 
-    def __init__(self, parent=None):
+    def __init__(self, db, parent=None):
         super().__init__(parent)
         self.newYeastUi = Ui_Dialog()
         self.newYeastUi.setupUi(self)
@@ -178,7 +184,7 @@ class NewYeastWindow(QDialog):
             event.accept()
 
 class ShowRecipeWindow(QMainWindow):
-    def __init__(self, parent=None):
+    def __init__(self, db, parent=None):
         super().__init__(parent)
         self.showRecipeUi = Ui_ShowRecipeWindow()
         self.showRecipeUi.setupUi(self)
@@ -224,7 +230,7 @@ class ShowRecipeWindow(QMainWindow):
             recipeModificationWindow.show()
 
 class RecipeModificationWindow(QMainWindow):
-    def __init__(self, parent=None, batch_id: str = ""):
+    def __init__(self, db, parent=None, batch_id: str = ""):
         super().__init__(parent)
         self.recipeModificationUi = Ui_SelectedRecipe()
         self.recipeModificationUi.setupUi(self)
