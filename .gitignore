@@ -2,3 +2,4 @@ ExecutableCreation.bat
 dist
 build
 *.spec
+Data/*
