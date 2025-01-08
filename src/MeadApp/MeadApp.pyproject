@@ -1,0 +1,11 @@
+{
+    "files": [
+        "widget.py",
+        "MainWindow.ui",
+        "NewRecipe.ui",
+        "AddYeast.ui",
+        "ShowRecipe.ui",
+        "SelectedRecipe.ui",
+        "GetDatabasePath.ui"
+    ]
+}

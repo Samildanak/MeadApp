@@ -1,5 +1,0 @@
-batch_id,name,date,volume,predicted_alcohol,residual_sugar,honey_quantity,yeast,fermaid_k,initial_brix,actual_brix,note
-1,Hydromel de miel de framboisier,15/05/2024,1.0,10.0,50.0,334.0,ec-1118,No,26.8,11.0,Test
-2,Hydromel de miel de printemps,15/05/2024,1.0,10.0,50.0,345.0,ec-1118,No,27,11.6,
-3,Hydromel de printemps,26/12/2024,1.0,12.0,50.0,344.0,ec-1118,No,29.0,0.0,Hydromel de printemps de base
-4,Hydromel de mures,26/12/2024,1.0,9.0,40.0,260.5,ec-1118,No,24.4,0.0,"Hydromel au miel de framboisier, avec ajout de meres congelees en debut de fermentation"

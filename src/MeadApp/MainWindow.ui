@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QWidget" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>438</width>
+    <height>238</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Mead App by Samildanak</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../Resources/meadappico_Uh1_icon.ico</normaloff>../Resources/meadappico_Uh1_icon.ico</iconset>
+  </property>
+  <widget class="QPushButton" name="newRecipeButton">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>60</y>
+     <width>121</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>New Recipe</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="showRecipeButton">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>140</y>
+     <width>121</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Show Recipes</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>210</y>
+     <width>101</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Mead App V0.01</string>
+   </property>
+  </widget>
+  <action name="actionNew_Recipe">
+   <property name="text">
+    <string>New Recipe</string>
+   </property>
+   <property name="toolTip">
+    <string>Open New Recipe Window</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
