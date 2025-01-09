@@ -6,7 +6,8 @@ class Database():
     def __init__(self, config_path):
         try:
             with open(config_path, 'r') as file:
-                self.config = json.load(file)
+                self.config_file = json.load(file)
+                self.config = self.config_file["database_info"]
         except FileNotFoundError:
             print(f"Error : file '{config_path}' not found")
         except json.JSONDecodeError as e:
@@ -19,4 +20,18 @@ class Database():
             yield connection
         finally:
             connection.close()
+    
+    def test_connection(self):
+        try:
+            with self.get_connection() as connection:
+                cursor = connection.cursor()
+                cursor.execute("SELECT 1")
+                result = cursor.fetchone()
+                if result and result[0] == 1:
+                    return True
+                else:
+                    return False
+        except mariadb.Error as err:
+            print(f"Error : {err}")
+            return False
     

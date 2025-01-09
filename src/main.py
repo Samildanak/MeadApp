@@ -24,20 +24,27 @@ from MeadApp.ui_AddYeast import Ui_Dialog
 from MeadApp.ui_ShowRecipe import Ui_ShowRecipeWindow
 from MeadApp.ui_SelectedRecipe import Ui_SelectedRecipe
 
-class MainWindow(QWidget):
+class MainWindow(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        self.configuration_path = "./config/configuration.json"
+       
+        self.db = Database(config_path=self.configuration_path)
 
-        db_config_path = self.get_db_config_file_path()
-        if db_config_path is None:
-            pass
-        
-        self.db = Database(db_config_path)
+        if self.db.test_connection():
+            self.ui.connectionStatus.setText("Connected")
+            self.ui.connectionStatus.setStyleSheet("background-color: green;")
+        else:
+            self.ui.connectionStatus.setText("Not Connected")
+            self.ui.connectionStatus.setStyleSheet("background-color: red;")
 
         self.ui.newRecipeButton.clicked.connect(self.onNewRecipeClicked)
         self.ui.showRecipeButton.clicked.connect(self.onShowRecipeClicked)
+
+        self.ui.actionConnect.triggered.connect(self.onConnect)
+        self.ui.actionChange_Database_Configuration.triggered.connect(self.onChangeConfiguration)
 
     def onNewRecipeClicked(self):
         newRecipe = NewRecipeWindow(parent = self, db = self.db)
@@ -46,14 +53,12 @@ class MainWindow(QWidget):
     def onShowRecipeClicked(self):
         showRecipe = ShowRecipeWindow(parent = self, db = self.db)
         showRecipe.show()
+    
+    def onChangeConfiguration(self):
+        print("Click")
 
-    def get_db_config_file_path(self, config_file="config.json"):
-        if os.path.exists(config_file):
-            with open(config_file, 'r') as f:
-                config = json.load()
-                return config.get('db_config_file')
-        else:
-            return None
+    def onConnect(self):
+        print("CLicki")
 
 class NewRecipeWindow(QMainWindow):
     def __init__(self, db, parent=None):

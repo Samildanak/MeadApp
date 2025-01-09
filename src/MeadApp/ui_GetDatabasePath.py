@@ -15,99 +15,143 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QAbstractButton, QApplication, QDialog, QDialogButtonBox,
-    QGridLayout, QLabel, QLineEdit, QPushButton,
-    QRadioButton, QSizePolicy, QWidget)
+from PySide6.QtWidgets import (QApplication, QComboBox, QDialog, QGridLayout,
+    QHBoxLayout, QLabel, QLineEdit, QListWidget,
+    QListWidgetItem, QPushButton, QSizePolicy, QStackedWidget,
+    QWidget)
 
 class Ui_GetDatabasePath(object):
     def setupUi(self, GetDatabasePath):
         if not GetDatabasePath.objectName():
             GetDatabasePath.setObjectName(u"GetDatabasePath")
-        GetDatabasePath.resize(504, 324)
-        self.buttonBox = QDialogButtonBox(GetDatabasePath)
-        self.buttonBox.setObjectName(u"buttonBox")
-        self.buttonBox.setGeometry(QRect(140, 280, 341, 32))
-        self.buttonBox.setOrientation(Qt.Orientation.Horizontal)
-        self.buttonBox.setStandardButtons(QDialogButtonBox.StandardButton.Cancel|QDialogButtonBox.StandardButton.Save)
-        self.jsonConfigExist = QRadioButton(GetDatabasePath)
-        self.jsonConfigExist.setObjectName(u"jsonConfigExist")
-        self.jsonConfigExist.setGeometry(QRect(20, 20, 591, 20))
-        self.jsonConfigExist.setChecked(True)
-        self.jsonConfigNotExist = QRadioButton(GetDatabasePath)
-        self.jsonConfigNotExist.setObjectName(u"jsonConfigNotExist")
-        self.jsonConfigNotExist.setGeometry(QRect(20, 90, 591, 20))
-        self.pathLine = QLineEdit(GetDatabasePath)
-        self.pathLine.setObjectName(u"pathLine")
-        self.pathLine.setGeometry(QRect(20, 50, 361, 22))
-        self.browse = QPushButton(GetDatabasePath)
-        self.browse.setObjectName(u"browse")
-        self.browse.setGeometry(QRect(400, 50, 75, 24))
-        self.gridLayoutWidget = QWidget(GetDatabasePath)
+        GetDatabasePath.resize(504, 263)
+        self.stackedWidget = QStackedWidget(GetDatabasePath)
+        self.stackedWidget.setObjectName(u"stackedWidget")
+        self.stackedWidget.setGeometry(QRect(20, 20, 471, 191))
+        self.page = QWidget()
+        self.page.setObjectName(u"page")
+        self.gridLayoutWidget = QWidget(self.page)
         self.gridLayoutWidget.setObjectName(u"gridLayoutWidget")
-        self.gridLayoutWidget.setGeometry(QRect(20, 120, 461, 141))
-        self.gridLayout = QGridLayout(self.gridLayoutWidget)
-        self.gridLayout.setObjectName(u"gridLayout")
-        self.gridLayout.setContentsMargins(0, 0, 9, 0)
+        self.gridLayoutWidget.setGeometry(QRect(0, 40, 461, 141))
+        self.ServerInfo = QGridLayout(self.gridLayoutWidget)
+        self.ServerInfo.setObjectName(u"ServerInfo")
+        self.ServerInfo.setContentsMargins(0, 0, 9, 0)
+        self.password = QLineEdit(self.gridLayoutWidget)
+        self.password.setObjectName(u"password")
+        self.password.setEnabled(True)
+
+        self.ServerInfo.addWidget(self.password, 1, 1, 1, 1)
+
         self.username = QLineEdit(self.gridLayoutWidget)
         self.username.setObjectName(u"username")
-        self.username.setEnabled(False)
+        self.username.setEnabled(True)
 
-        self.gridLayout.addWidget(self.username, 0, 1, 1, 1)
-
-        self.label_2 = QLabel(self.gridLayoutWidget)
-        self.label_2.setObjectName(u"label_2")
-
-        self.gridLayout.addWidget(self.label_2, 1, 0, 1, 1)
-
-        self.label_3 = QLabel(self.gridLayoutWidget)
-        self.label_3.setObjectName(u"label_3")
-
-        self.gridLayout.addWidget(self.label_3, 2, 0, 1, 1)
-
-        self.label_4 = QLabel(self.gridLayoutWidget)
-        self.label_4.setObjectName(u"label_4")
-
-        self.gridLayout.addWidget(self.label_4, 3, 0, 1, 1)
+        self.ServerInfo.addWidget(self.username, 0, 1, 1, 1)
 
         self.label = QLabel(self.gridLayoutWidget)
         self.label.setObjectName(u"label")
 
-        self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
-
-        self.password = QLineEdit(self.gridLayoutWidget)
-        self.password.setObjectName(u"password")
-        self.password.setEnabled(False)
-
-        self.gridLayout.addWidget(self.password, 1, 1, 1, 1)
+        self.ServerInfo.addWidget(self.label, 0, 0, 1, 1)
 
         self.host = QLineEdit(self.gridLayoutWidget)
         self.host.setObjectName(u"host")
-        self.host.setEnabled(False)
+        self.host.setEnabled(True)
 
-        self.gridLayout.addWidget(self.host, 2, 1, 1, 1)
+        self.ServerInfo.addWidget(self.host, 2, 1, 1, 1)
+
+        self.label_3 = QLabel(self.gridLayoutWidget)
+        self.label_3.setObjectName(u"label_3")
+
+        self.ServerInfo.addWidget(self.label_3, 2, 0, 1, 1)
+
+        self.label_2 = QLabel(self.gridLayoutWidget)
+        self.label_2.setObjectName(u"label_2")
+
+        self.ServerInfo.addWidget(self.label_2, 1, 0, 1, 1)
+
+        self.label_4 = QLabel(self.gridLayoutWidget)
+        self.label_4.setObjectName(u"label_4")
+
+        self.ServerInfo.addWidget(self.label_4, 3, 0, 1, 1)
 
         self.port = QLineEdit(self.gridLayoutWidget)
         self.port.setObjectName(u"port")
-        self.port.setEnabled(False)
+        self.port.setEnabled(True)
 
-        self.gridLayout.addWidget(self.port, 3, 1, 1, 1)
+        self.ServerInfo.addWidget(self.port, 3, 1, 1, 1)
+
+        self.label_2.raise_()
+        self.label_3.raise_()
+        self.label_4.raise_()
+        self.label.raise_()
+        self.password.raise_()
+        self.host.raise_()
+        self.port.raise_()
+        self.username.raise_()
+        self.label_info = QLabel(self.page)
+        self.label_info.setObjectName(u"label_info")
+        self.label_info.setGeometry(QRect(0, 0, 451, 41))
+        self.stackedWidget.addWidget(self.page)
+        self.page_2 = QWidget()
+        self.page_2.setObjectName(u"page_2")
+        self.label_5 = QLabel(self.page_2)
+        self.label_5.setObjectName(u"label_5")
+        self.label_5.setGeometry(QRect(10, 10, 381, 16))
+        self.database_available = QComboBox(self.page_2)
+        self.database_available.setObjectName(u"database_available")
+        self.database_available.setGeometry(QRect(40, 70, 311, 22))
+        self.label_6 = QLabel(self.page_2)
+        self.label_6.setObjectName(u"label_6")
+        self.label_6.setGeometry(QRect(40, 40, 131, 16))
+        self.stackedWidget.addWidget(self.page_2)
+        self.page_3 = QWidget()
+        self.page_3.setObjectName(u"page_3")
+        self.label_7 = QLabel(self.page_3)
+        self.label_7.setObjectName(u"label_7")
+        self.label_7.setGeometry(QRect(10, 10, 441, 151))
+        self.label_7.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignTop)
+        self.label_7.setWordWrap(True)
+        self.table_available = QListWidget(self.page_3)
+        self.table_available.setObjectName(u"table_available")
+        self.table_available.setGeometry(QRect(10, 60, 431, 121))
+        self.stackedWidget.addWidget(self.page_3)
+        self.horizontalLayoutWidget = QWidget(GetDatabasePath)
+        self.horizontalLayoutWidget.setObjectName(u"horizontalLayoutWidget")
+        self.horizontalLayoutWidget.setGeometry(QRect(220, 200, 251, 61))
+        self.horizontalLayout = QHBoxLayout(self.horizontalLayoutWidget)
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.next = QPushButton(self.horizontalLayoutWidget)
+        self.next.setObjectName(u"next")
+
+        self.horizontalLayout.addWidget(self.next)
+
+        self.cancel = QPushButton(self.horizontalLayoutWidget)
+        self.cancel.setObjectName(u"cancel")
+
+        self.horizontalLayout.addWidget(self.cancel)
 
 
         self.retranslateUi(GetDatabasePath)
-        self.buttonBox.accepted.connect(GetDatabasePath.accept)
-        self.buttonBox.rejected.connect(GetDatabasePath.reject)
+
+        self.stackedWidget.setCurrentIndex(2)
+
 
         QMetaObject.connectSlotsByName(GetDatabasePath)
     # setupUi
 
     def retranslateUi(self, GetDatabasePath):
-        GetDatabasePath.setWindowTitle(QCoreApplication.translate("GetDatabasePath", u"Dialog", None))
-        self.jsonConfigExist.setText(QCoreApplication.translate("GetDatabasePath", u"I already have a Database config JSON File", None))
-        self.jsonConfigNotExist.setText(QCoreApplication.translate("GetDatabasePath", u"I don't have a Database config JSON File", None))
-        self.browse.setText(QCoreApplication.translate("GetDatabasePath", u"Browse...", None))
-        self.label_2.setText(QCoreApplication.translate("GetDatabasePath", u"Password", None))
-        self.label_3.setText(QCoreApplication.translate("GetDatabasePath", u"IP Address", None))
-        self.label_4.setText(QCoreApplication.translate("GetDatabasePath", u"Port", None))
+        GetDatabasePath.setWindowTitle(QCoreApplication.translate("GetDatabasePath", u"Database Configuration", None))
         self.label.setText(QCoreApplication.translate("GetDatabasePath", u"Username", None))
+        self.label_3.setText(QCoreApplication.translate("GetDatabasePath", u"IP Address", None))
+        self.label_2.setText(QCoreApplication.translate("GetDatabasePath", u"Password", None))
+        self.label_4.setText(QCoreApplication.translate("GetDatabasePath", u"Port", None))
+        self.port.setText(QCoreApplication.translate("GetDatabasePath", u"3306", None))
+        self.label_info.setText(QCoreApplication.translate("GetDatabasePath", u"Enter the configuration information of your SQL Server :", None))
+        self.label_5.setText(QCoreApplication.translate("GetDatabasePath", u"Connection to server successful, please select a Database :", None))
+        self.label_6.setText(QCoreApplication.translate("GetDatabasePath", u"Available Database :", None))
+        self.label_7.setText(QCoreApplication.translate("GetDatabasePath", u"<html><head/><body><p>The connection to database is successful. If database doesn't contains table RECIPE and table YEAST_TYPE, these two tables will be created. Here the actual table on your database :</p><p><br/></p></body></html>", None))
+        self.next.setText(QCoreApplication.translate("GetDatabasePath", u"Next", None))
+        self.cancel.setText(QCoreApplication.translate("GetDatabasePath", u"Cancel", None))
     # retranslateUi
 
