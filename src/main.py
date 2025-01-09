@@ -12,8 +12,10 @@ import meadCalculation as mC
 # Import User Database library
 from db_connection import Database
 
+from db_config_window import DatabasePathWindow
+
 # Import Qt libraries
-from PySide6.QtWidgets import QApplication, QWidget, QMainWindow, QDialog, QHeaderView, QTableView
+from PySide6.QtWidgets import QApplication, QWidget, QMainWindow, QDialog, QHeaderView, QTableView, QMessageBox
 from PySide6.QtCore import QDate, Signal, Qt
 from PySide6.QtGui import QStandardItemModel, QStandardItem
 
@@ -29,7 +31,19 @@ class MainWindow(QMainWindow):
         super().__init__(parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+
         self.configuration_path = "./config/configuration.json"
+
+        with open(self.configuration_path, 'r') as configuration:
+            json_config = json.load(configuration)
+            if json_config["initialisation_info"]["first_launch"] == "yes":
+                msgBox = QMessageBox(text='This is your first launch of Mead Designer. \n We need to configure the Database you will use for your recipe')
+                msgBox.setWindowTitle("Informative Window")
+                msgBox.setStandardButtons(QMessageBox.Ok)
+                msgBox.buttonClicked.connect(msgBox.close)
+                msgBox.exec()
+                databaseConfigurationWindow = DatabasePathWindow(parent=self)
+                databaseConfigurationWindow.exec()
        
         self.db = Database(config_path=self.configuration_path)
 

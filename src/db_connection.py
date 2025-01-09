@@ -8,6 +8,7 @@ class Database():
             with open(config_path, 'r') as file:
                 self.config_file = json.load(file)
                 self.config = self.config_file["database_info"]
+                self.config["connect_timeout"] = 10
         except FileNotFoundError:
             print(f"Error : file '{config_path}' not found")
         except json.JSONDecodeError as e:
