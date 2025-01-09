@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Dialog</class>
- <widget class="QDialog" name="Dialog">
+ <class>GetDatabasePath</class>
+ <widget class="QDialog" name="GetDatabasePath">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -26,7 +26,7 @@
     <enum>Qt::Orientation::Horizontal</enum>
    </property>
    <property name="standardButtons">
-    <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
+    <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Save</set>
    </property>
   </widget>
   <widget class="QRadioButton" name="jsonConfigExist">
@@ -58,7 +58,7 @@
     <string>I don't have a Database config JSON File</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit">
+  <widget class="QLineEdit" name="pathLine">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -91,8 +91,15 @@
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
+    <property name="rightMargin">
+     <number>9</number>
+    </property>
     <item row="0" column="1">
-     <widget class="QLineEdit" name="username"/>
+     <widget class="QLineEdit" name="username">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+     </widget>
     </item>
     <item row="1" column="0">
      <widget class="QLabel" name="label_2">
@@ -123,13 +130,25 @@
      </widget>
     </item>
     <item row="1" column="1">
-     <widget class="QLineEdit" name="password"/>
+     <widget class="QLineEdit" name="password">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+     </widget>
     </item>
     <item row="2" column="1">
-     <widget class="QLineEdit" name="host"/>
+     <widget class="QLineEdit" name="host">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+     </widget>
     </item>
     <item row="3" column="1">
-     <widget class="QLineEdit" name="port"/>
+     <widget class="QLineEdit" name="port">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -139,7 +158,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>Dialog</receiver>
+   <receiver>GetDatabasePath</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -155,7 +174,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>Dialog</receiver>
+   <receiver>GetDatabasePath</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
