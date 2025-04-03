@@ -10,13 +10,12 @@ build:
     paths:
       - .cache/pip
       - .venv/
-  before_script:
-    - apt updgrade && apt update
+  script:
+    - apt upgrade && apt update
     - python -m venv .venv
     - source .venv/bin/activate
     - python -m pip install -r requirements.txt
     - python -m pip install pyinstaller
-  script:
     - pyinstaller --onefile --name MeadDesigner src/main.py
   artifacts:
     paths:
