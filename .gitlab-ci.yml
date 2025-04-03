@@ -4,9 +4,10 @@ stages:
 build:
   stage: build
   image: alpine
-  script:
+  before_script:
     - apt-get update && apt-get install python
     - python pip install pyinstaller
+  script:
     - pyinstaller src/main.py
   artifacts:
     paths:
