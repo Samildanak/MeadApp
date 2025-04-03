@@ -11,7 +11,7 @@ build:
       - .cache/pip
       - .venv/
   before_script:
-    - apt install binutils -y
+    - apt updgrade && apt update
     - python -m venv .venv
     - source .venv/bin/activate
     - python -m pip install -r requirements.txt
