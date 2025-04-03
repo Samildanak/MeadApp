@@ -3,8 +3,11 @@ stages:
 
 build:
   stage: build
-  image: batonogov/pyinstaller-windows
+  image: alpine
   script:
+    - sudo apt-get update
+    - sudo apt-get install python
+    - python pip install pyinstaller
     - pyinstaller src/main.py
   artifacts:
     paths:
