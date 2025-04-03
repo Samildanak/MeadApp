@@ -3,9 +3,8 @@ stages:
 
 build:
   stage: build
-  image: alpine
+  image: batonogov/pyinstaller-windows
   script:
-    - python pip install -U pyinstaller
     - pyinstaller src/main.py
   artifacts:
     paths:
