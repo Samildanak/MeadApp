@@ -1,0 +1,11 @@
+stages:
+  - build
+
+build:
+  stage: build
+  image: alpine
+  script:
+    - pip install -U pyinstaller
+    - pyinstaller src/main.py
+  artifacts:
+    - dist/main
