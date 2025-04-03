@@ -3,12 +3,14 @@ stages:
 
 build:
   stage: build
-  image: alpine
+  image: python:3.9-slim
   before_script:
-    - apt-get update && apt-get install python
-    - python pip install pyinstaller
+    - python -m venv .venv
+    - source .venv/bin/activate
+    - python -m pip install -r requirements.txt
+    - python -m pip install pyinstaller
   script:
-    - pyinstaller src/main.py
+    - pyinstaller --onefile --name MeadDesigner src/main.py
   artifacts:
     paths:
-      - dist/main
+      - dist
