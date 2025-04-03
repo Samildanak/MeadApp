@@ -8,4 +8,5 @@ build:
     - pip install -U pyinstaller
     - pyinstaller src/main.py
   artifacts:
-    - dist/main
+    paths:
+      - dist/main
