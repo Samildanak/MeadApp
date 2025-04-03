@@ -1,4 +1,4 @@
-import mariadb
+import sqlite3
 import json
 from contextlib import contextmanager
 
@@ -8,7 +8,7 @@ class Database():
             with open(config_path, 'r') as file:
                 self.config_file = json.load(file)
                 self.config = self.config_file["database_info"]
-                self.config["connect_timeout"] = 10
+                self.config["timeout"] = 10
         except FileNotFoundError:
             print(f"Error : file '{config_path}' not found")
         except json.JSONDecodeError as e:
@@ -16,7 +16,7 @@ class Database():
         
     @contextmanager
     def get_connection(self):
-        connection = mariadb.connect(**self.config)
+        connection = sqlite3.connect(**self.config)
         try:
             yield connection
         finally:
@@ -32,7 +32,7 @@ class Database():
                     return True
                 else:
                     return False
-        except mariadb.Error as err:
+        except sqlite3.Error as err:
             print(f"Error : {err}")
             return False
     

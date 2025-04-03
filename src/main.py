@@ -2,7 +2,7 @@
 # Import system libraries
 import sys
 from datetime import datetime
-import mariadb
+import sqlite3
 import json
 import os
 
@@ -34,18 +34,22 @@ class MainWindow(QMainWindow):
 
         self.configuration_path = "./config/configuration.json"
 
-        with open(self.configuration_path, 'r') as configuration:
+        self.db = Database(config_path=self.configuration_path)
+
+        with open(self.configuration_path, 'r+') as configuration:
             json_config = json.load(configuration)
             if json_config["initialisation_info"]["first_launch"] == "yes":
-                msgBox = QMessageBox(text='This is your first launch of Mead Designer. \n We need to configure the Database you will use for your recipe')
-                msgBox.setWindowTitle("Informative Window")
-                msgBox.setStandardButtons(QMessageBox.Ok)
-                msgBox.buttonClicked.connect(msgBox.close)
-                msgBox.exec()
-                databaseConfigurationWindow = DatabasePathWindow(parent=self)
-                databaseConfigurationWindow.exec()
-       
-        self.db = Database(config_path=self.configuration_path)
+                with self.db.get_connection() as connection:
+                    cursor = connection.cursor()
+                    cursor.execute("CREATE TABLE recipe(recipe_id INTEGER PRIMARY KEY ASC, name, initial_date, volume, " \
+                    "predicted_alcohol, residual_sugar, honey_quantity, yeast_id, " \
+                    "fermaid_k, initial_brix, actual_brix, note)")
+                    cursor.execute("CREATE TABLE yeast_type(yeast_id INTEGER PRIMARY KEY ASC, yeast_name)")
+                    connection.commit()
+                    json_config["initialisation_info"]["first_launch"] = "no"
+                    configuration.seek(0)
+                    json.dump(json_config, configuration)
+                    configuration.truncate()
 
         if self.db.test_connection():
             self.ui.connectionStatus.setText("Connected")
@@ -111,22 +115,12 @@ class NewRecipeWindow(QMainWindow):
         self.newRecipeUi.honey_box.setValue(honeyMass)
 
     def savingRecipe(self):
-        name = self.newRecipeUi.name_box.text()
-        volume = str(self.newRecipeUi.volume_box.value())
-        alcoholicConcentration = str(self.newRecipeUi.alcohol_box.value())
-        residualSugar = str(self.newRecipeUi.sugar_box.value())
-        honeyMass = str(self.newRecipeUi.honey_box.value())
-        fermaidK = 1 if self.newRecipeUi.fermaid_box.isChecked() else 0
-        notes = self.newRecipeUi.note_box.toPlainText()
-        date = self.newRecipeUi.date_box.date().toString("yyyy-MM-dd")
         yeast = self.newRecipeUi.comboBox.currentText()
-        initialBrix = str(self.newRecipeUi.initial_brix.value())
-        actualBrix = initialBrix
 
         # Insert new recipe in Database
         with self.db.get_connection() as connection:
             cursor = connection.cursor()
-            cursor.execute("SELECT yeast_id FROM yeast_type WHERE yeast_name=%s", (yeast,))
+            cursor.execute("SELECT yeast_id FROM yeast_type WHERE yeast_name=?", (yeast,))
             result = cursor.fetchone()
             try:
                 if result is None:
@@ -135,27 +129,43 @@ class NewRecipeWindow(QMainWindow):
                     yeast_id = result[0]
             except ValueError as e:
                 print(f"Error : {e}")
+            
+            cursor.execute("SELECT recipe_id FROM recipe ORDER BY recipe_id DESC LIMIT 1")
+            result = cursor.fetchone()
+            try:
+                if result is None:
+                    recipe_id = 1
+                else:
+                    recipe_id = result[0] + 1
+            except ValueError as e:
+                print(f"Error : {e}")
+            
+            data = {
+                "recipe_id": recipe_id,
+                "name": self.newRecipeUi.name_box.text(),
+                "volume": str(self.newRecipeUi.volume_box.value()),
+                "predicted_alcohol": str(self.newRecipeUi.alcohol_box.value()),
+                "residual_sugar": str(self.newRecipeUi.sugar_box.value()),
+                "honey_quantity": str(self.newRecipeUi.honey_box.value()),
+                "fermaid_k": 1 if self.newRecipeUi.fermaid_box.isChecked() else 0,
+                "note": self.newRecipeUi.note_box.toPlainText(),
+                "initial_date": self.newRecipeUi.date_box.date().toString("yyyy-MM-dd"),
+                "yeast_id": yeast_id,
+                "initial_brix": str(self.newRecipeUi.initial_brix.value()),
+                "actual_brix": str(self.newRecipeUi.initial_brix.value())
+            }
 
             insert_query = """
-                INSERT INTO recipe (name, initial_date, volume, predicted_alcohol, residual_sugar, honey_quantity, yeast_id, fermaid_k, initial_brix, actual_brix, note)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)            
+                INSERT INTO recipe VALUES(:recipe_id, :name, :initial_date, :volume, 
+                :predicted_alcohol, :residual_sugar, :honey_quantity, 
+                :yeast_id, :fermaid_k, :initial_brix, :actual_brix, :note)         
             """
 
             try:
-                cursor.execute(insert_query, (name,
-                                              date,
-                                              volume,
-                                              alcoholicConcentration,
-                                              residualSugar,
-                                              honeyMass,
-                                              yeast_id,
-                                              fermaidK,
-                                              initialBrix,
-                                              actualBrix,
-                                              notes,))
+                cursor.execute(insert_query, data)
                 connection.commit()
                 print("New Recipe successfully added")
-            except mariadb.Error as err:
+            except sqlite3.Error as err:
                 print(f"Error : {err}")
                 connection.rollback()
 
@@ -172,7 +182,7 @@ class NewRecipeWindow(QMainWindow):
 
             for row in result:
                 self.newRecipeUi.comboBox.addItem(row[0])
-        except mariadb.Error as e:
+        except sqlite3.Error as e:
             print(f"Error : {e}")
             connection.rollback()
     
@@ -210,10 +220,10 @@ class NewYeastWindow(QDialog):
                 try:
                     cursor = connection.cursor()
                     cursor.execute("""INSERT INTO yeast_type (yeast_name) 
-                                VALUES (%s)""", (newYeast,))
+                                VALUES (?)""", (newYeast,))
                     connection.commit()
                     print("New Yeast added succesfully")
-                except mariadb.Error as err:
+                except sqlite3.Error as err:
                     print(f"Error : {err}")
 
         self.closeEvent(None)
@@ -282,13 +292,13 @@ class RecipeModificationWindow(QMainWindow):
         with self.db.get_connection() as connection:
             cursor = connection.cursor()
             cursor.execute("""SELECT name, initial_date, volume, honey_quantity, yeast_id, fermaid_k, initial_brix, actual_brix, note 
-                           FROM recipe WHERE recipe_id = %s""", (self.batch_id,))
+                           FROM recipe WHERE recipe_id = ?""", (self.batch_id,))
             recipe = cursor.fetchone()
         
         self.loadYeastItem(recipe[4])
 
         self.recipeModificationUi.name_box.setText(recipe[0])
-        self.recipeModificationUi.date_box.setDate(recipe[1])
+        self.recipeModificationUi.date_box.setDate(QDate.fromString(recipe[1], "yyyy-MM-dd"))
         self.recipeModificationUi.volume_box.setValue(float(recipe[2]))
         self.recipeModificationUi.honey_box.setValue(float(recipe[3]))
         self.recipeModificationUi.fermaid_box.setChecked(True if recipe[5] == "Yes" else False)
@@ -323,14 +333,14 @@ class RecipeModificationWindow(QMainWindow):
             for row in result:
                 self.recipeModificationUi.comboBox.addItem(row[0])
             self.recipeModificationUi.comboBox.setCurrentIndex(yeast_id-1)
-        except mariadb.Error as e:
+        except sqlite3.Error as e:
             print(f"Error : {e}")
             connection.rollback()
 
     def savingRecipe(self):
         update_query = """UPDATE recipe 
-            SET name = %s, volume = %s, fermaid_k = %s, note = %s, initial_date = %s, yeast_id = %s, initial_brix = %s, actual_brix = %s
-            WHERE recipe_id = %s"""
+            SET name = ?, volume = ?, fermaid_k = ?, note = ?, initial_date = ?, yeast_id = ?, initial_brix = ?, actual_brix = ?
+            WHERE recipe_id = ?"""
 
         name = self.recipeModificationUi.name_box.text()
         volume = str(self.recipeModificationUi.volume_box.value())
@@ -343,7 +353,7 @@ class RecipeModificationWindow(QMainWindow):
 
         with self.db.get_connection() as connection:
             cursor = connection.cursor()
-            cursor.execute("SELECT yeast_id FROM yeast_type WHERE yeast_name=%s", (yeast,))
+            cursor.execute("SELECT yeast_id FROM yeast_type WHERE yeast_name=?", (yeast,))
             result = cursor.fetchone()
             yeast_id = result[0]
 
@@ -359,7 +369,7 @@ class RecipeModificationWindow(QMainWindow):
                                             self.batch_id))
                 connection.commit()
                 print("Recipe Updated")
-            except mariadb.Error as err:
+            except sqlite3.Error as err:
                 print(f"Error : {err}")
 
         self.close()
