@@ -5,8 +5,7 @@ build:
   stage: build
   image: alpine
   script:
-    - sudo apt-get update
-    - sudo apt-get install python
+    - apt-get update && apt-get install python
     - python pip install pyinstaller
     - pyinstaller src/main.py
   artifacts:
