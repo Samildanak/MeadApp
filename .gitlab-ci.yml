@@ -5,7 +5,7 @@ build:
   stage: build
   image: alpine
   script:
-    - pip install -U pyinstaller
+    - python pip install -U pyinstaller
     - pyinstaller src/main.py
   artifacts:
     paths:
