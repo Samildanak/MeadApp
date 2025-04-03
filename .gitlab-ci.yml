@@ -3,20 +3,13 @@ stages:
 
 build:
   stage: build
-  image: python:3.9-slim
-  variables:
-    PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
-  cache: # https://docs.gitlab.com/ee/ci/caching/#cache-python-dependencies
-    paths:
-      - .cache/pip
-      - .venv/
+  image: 
+    name: batonogov/pyinstaller-windows:latest
+    entrypoint: ['']
   script:
-    - apt upgrade && apt update
-    - python -m venv .venv
-    - source .venv/bin/activate
-    - python -m pip install -r requirements.txt
-    - python -m pip install pyinstaller
-    - pyinstaller --onefile --name MeadDesigner src/main.py
+    - echo "Creating Windows artifact"
+    - pip install -r ./requirements.txt
+    - pyinstaller --onefile main.py
   artifacts:
     paths:
       - dist
