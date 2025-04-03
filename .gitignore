@@ -1,4 +1,1 @@
-ExecutableCreation.bat
-dist
-build
-*.spec
+.venv
