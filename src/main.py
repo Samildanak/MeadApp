@@ -12,8 +12,6 @@ import meadCalculation as mC
 # Import User Database library
 from db_connection import Database
 
-from db_config_window import DatabasePathWindow
-
 # Import Qt libraries
 from PySide6.QtWidgets import QApplication, QWidget, QMainWindow, QDialog, QHeaderView, QTableView, QMessageBox
 from PySide6.QtCore import QDate, Signal, Qt
@@ -35,22 +33,7 @@ class MainWindow(QMainWindow):
         self.configuration_path = "./config/configuration.json"
 
         self.db = Database(config_path=self.configuration_path)
-
-        with open(self.configuration_path, 'r+') as configuration:
-            json_config = json.load(configuration)
-            if json_config["initialisation_info"]["first_launch"] == "yes":
-                with self.db.get_connection() as connection:
-                    cursor = connection.cursor()
-                    cursor.execute("CREATE TABLE recipe(recipe_id INTEGER PRIMARY KEY ASC, name, initial_date, volume, " \
-                    "predicted_alcohol, residual_sugar, honey_quantity, yeast_id, " \
-                    "fermaid_k, initial_brix, actual_brix, note)")
-                    cursor.execute("CREATE TABLE yeast_type(yeast_id INTEGER PRIMARY KEY ASC, yeast_name)")
-                    connection.commit()
-                    json_config["initialisation_info"]["first_launch"] = "no"
-                    configuration.seek(0)
-                    json.dump(json_config, configuration)
-                    configuration.truncate()
-
+        
         if self.db.test_connection():
             self.ui.connectionStatus.setText("Connected")
             self.ui.connectionStatus.setStyleSheet("background-color: green;")

@@ -8,8 +8,8 @@ build:
     entrypoint: ['']
   script:
     - echo "Creating Windows artifact"
-    - pip install -r ./requirements.txt
-    - pyinstaller --onefile src/main.py
+#    - pip install -r ./requirements.txt
+#    - pyinstaller --onefile src/main.py
   artifacts:
     paths:
       - dist
